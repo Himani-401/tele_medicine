@@ -1,0 +1,49 @@
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 10px 0;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar-list {
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.sidebar-list h5 {
+  margin: 10px 0 5px;
+}
+
+.sidebar-list input[type="range"] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.rating, .brand {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.rating label, .brand label {
+  margin-left: 5px;
+}
