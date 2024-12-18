@@ -10,11 +10,11 @@ function Main() {
   };
 
   return (
-    <div className="main">
-      <div className="content">
-        <h1 className="heading-main">WELLNESS STARTS <br />HERE</h1>
+    <div className="main-ph">
+      <div className="cnt">
+        <h1 className="heading-main-ph">WELLNESS STARTS <br />HERE</h1>
         <p className="text-main">Providing medicines at your doorstep</p>
-        <button className="button-main" onClick={handleExplore}>
+        <button className="button-main-ph" onClick={handleExplore}>
           Explore
         </button>
       </div>

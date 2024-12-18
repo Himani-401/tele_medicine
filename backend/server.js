@@ -1,22 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const cors = require("cors");
+require('dotenv').config();
 const path = require('path');
-
 const cartRoutes = require('./routes/cart');
-const Product = require('./models/Product');  
+const Product = require('./models/Product'); 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
-dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-
 app.use('/api/cart', cartRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
 mongoose
   .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
@@ -60,6 +59,53 @@ app.get("/api/products/:id", async (req, res) => {
   } catch (error) {
     console.error("Error fetching product details:", error);
     res.status(500).json({ message: 'Error fetching product details' });
+  }
+});
+
+
+const MINIMUM_AMOUNT = 50; 
+
+app.post("/api/create-checkout-session", async (req, res) => {
+  try {
+    const { items, userId } = req.body;
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: "No items provided for checkout." });
+    }
+
+    const totalAmount = items.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0);
+
+    if (totalAmount < MINIMUM_AMOUNT) {
+      return res.status(400).json({
+        error: `The total amount must be at least ₹${MINIMUM_AMOUNT}.00 to proceed with checkout.`,
+      });
+    }
+
+    const lineItems = items.map(item => ({
+      price_data: {
+        currency: "inr", 
+        product_data: {
+          name: item.productId.name,
+          description: item.productId.description,
+        },
+        unit_amount: item.productId.price * 100, 
+      },
+      quantity: item.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],  
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:5173/cart`,
+      metadata: { userId }, 
+    });
+
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ error: "Internal Server Error", message: error.message });
   }
 });
 

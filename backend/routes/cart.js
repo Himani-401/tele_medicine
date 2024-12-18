@@ -1,8 +1,7 @@
-// routes/cartRoutes.js
 const express = require('express');
 const router = express.Router();
 const { getCartItems, updateCartItem } = require("../controllers/cartController");
-const Cart = require('../models/Cart');  // Ensure this path is correct
+const Cart = require('../models/Cart');  
 
 
 router.post("/add", async (req, res) => {

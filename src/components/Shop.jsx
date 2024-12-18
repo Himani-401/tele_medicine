@@ -47,7 +47,7 @@ function Shop() {
 
   return (
     <div className="shop-container">
-      <div className="sidebar">
+      <div className="sidebar-ph">
         <h2>Categories</h2>
         <ul>
           {categories.map((category) => (
@@ -64,7 +64,7 @@ function Shop() {
 
       <div className="shop-content">
         <h1>{selectedCategory} Products</h1>
-        <div className="product-grid">
+        <div className="product-grid1">
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product._id} className="product-card1">
@@ -76,7 +76,7 @@ function Shop() {
       className="product-image1"
     />
     <h3 className="product-name1">{product.name}</h3>
-    <p className="product-description">{product.description}</p>
+    <p className="product-description1">{product.description}</p>
     <p className="product-price1">Price: ₹{product.price}</p>
   </div>
 </Link>

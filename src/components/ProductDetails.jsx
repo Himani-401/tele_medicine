@@ -4,7 +4,7 @@ import "./ProductDetails.css";
 
 function ProductDetails() {
   const { id } = useParams(); 
-  const userId = "exampleUserId";  // You may want to replace this with actual user management logic
+  const userId = "exampleUserId";  
 
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -16,7 +16,7 @@ function ProductDetails() {
     setLoading(true);
     setError(null);
   
-    fetch(`${BASE_URL}/api/products/${id}`)  // Fetch product by ID
+    fetch(`${BASE_URL}/api/products/${id}`) 
       .then((response) => response.json())
       .then((data) => {
         setProduct(data);
@@ -35,13 +35,11 @@ function ProductDetails() {
   };
 
   const handleAddToCart = () => {
-    // Make sure the quantity is a valid number
     if (quantity < 1 || isNaN(quantity)) {
       alert("Please select a valid quantity.");
       return;
     }
 
-    // Send productId, quantity, and userId to the backend to add to the cart
     fetch(`${BASE_URL}/api/cart/add`, {
       method: "POST",
       headers: {
@@ -77,19 +75,19 @@ function ProductDetails() {
 
   const imageUrl = product.imageUrl
     ? `http://localhost:5000/images/${product.imageUrl}`
-    : "/path/to/placeholder.jpg";  // Placeholder image path
+    : "/path/to/placeholder.jpg";  
 
   return (
-    <div className="whole">
-      <div className="product-page">
-        <div className="product-image">
+    <div className="whole-ph">
+      <div className="product-page-ph">
+        <div className="product-image-ph">
           <img src={imageUrl} alt={product.name} />
         </div>
-        <div className="product-details">
+        <div className="product-details-ph">
           <h2>{product.name}</h2>
           <p>₹{product.price}</p>
           <p>{product.description}</p>
-          <div className="quantity-container">
+          <div className="quantity-container-ph">
             <label htmlFor="quantity">Quantity:</label>
             <input
               type="number"

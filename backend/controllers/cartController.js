@@ -21,7 +21,6 @@ const updateCartItem = async (req, res) => {
   try {
     let cart = await Cart.findOne({ userId });
 
-    // If cart does not exist, create a new one
     if (!cart) {
       cart = new Cart({ userId, items: [] });
     }
@@ -41,7 +40,6 @@ const updateCartItem = async (req, res) => {
         if (productInCart.quantity > 1) {
           productInCart.quantity -= 1;
         } else {
-          // Only remove the product if quantity reaches 0 after decrease
           cart.items = cart.items.filter(item => item.productId.toString() !== productId);
         }
         break;
@@ -62,7 +60,6 @@ const updateCartItem = async (req, res) => {
         return res.status(400).json({ message: "Invalid action" });
     }
 
-    // Save the updated cart
     await cart.save();
 
     res.status(200).json({
