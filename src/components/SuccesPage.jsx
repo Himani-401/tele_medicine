@@ -1,19 +1,47 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const SuccessPage = () => {
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const [sessionDetails, setSessionDetails] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const sessionId = query.get("session_id");
+    if (sessionId) {
+      fetch(`http://localhost:5000/api/checkout-session/${sessionId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch session details");
+          }
+          return response.json();
+        })
+        .then(data => setSessionDetails(data))
+        .catch(err => setError(err.message));
+    }
+  }, [sessionId]);
 
-  }, [location]);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!sessionDetails) {
+    return <div>Loading session details...</div>;
+  }
 
   return (
     <div>
       <h1>Payment Successful!</h1>
-      <p>Your order has been placed successfully. Thank you for your purchase!</p>
+      <p>Thank you for your purchase.</p>
+      <p>
+        Payment ID: <strong>{sessionDetails.id}</strong>
+      </p>
+      <p>
+        Amount Paid: <strong>₹{sessionDetails.amount_total / 100}</strong>
+      </p>
+      <p>
+        Payment Status: <strong>{sessionDetails.payment_status}</strong>
+      </p>
     </div>
   );
 };

@@ -108,6 +108,18 @@ app.post("/api/create-checkout-session", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error", message: error.message });
   }
 });
+app.get('/api/checkout-session/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(id); 
+    res.json(session); 
+  } catch (error) {
+    console.error("Error retrieving checkout session:", error);
+    res.status(500).json({ error: "Failed to retrieve checkout session" });
+  }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

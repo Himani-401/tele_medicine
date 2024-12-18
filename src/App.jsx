@@ -7,7 +7,9 @@ import Footer from './components/Footer';
 import Cart from './components/Cart';
 import ProductDetails from './components/ProductDetails';
 import Checkout from './components/Checkout';
+import SuccessPage from './components/SuccesPage';
 import { Elements } from "@stripe/react-stripe-js"; 
+
 
 import { stripePromise } from './components/Checkout';
 
@@ -22,6 +24,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<SuccessPage />} />
         </Routes>
         <Footer />
       </Router>
